@@ -1,0 +1,131 @@
+.text {
+	
+	font-size: 1.3em;
+	padding-top: 3px;
+	border-top: 10px;
+	color: red;
+}
+/***************************
+Major Body Sections
+****************************/
+#fruitMarket {
+	outline: 3px solid black;
+	height: 800px;
+	width: 1000px;
+}
+.fruitStats {
+	background-image: url('images/fruitStats.png');
+	position: relative;
+	outline: 3px solid black;
+	height: 250px;
+	top: 3px;
+	z-index: 2;	
+}
+.fruitDisplay {
+	position: relative;
+	outline: 3px solid black;
+	height: 200px;
+	top: 6px;
+	z-index: 3;
+	
+}
+#lowerLogo {
+	background-image: url('images/frontDisplay.png');
+	position: relative;
+	outline: 3px solid black;
+	height: 141px;
+	top: -11px;
+	z-index: 4;
+	
+}
+/***************************
+Banner section
+****************************/
+.banner {
+	height: 200px;
+}
+#fruitBackboard{
+	background-image: url('images/Banner.png');
+	text-align: center;
+	position:relative;
+	height:200px;
+	width: 1000px;
+	top: -38%;
+	z-index: 1;
+}
+.dailyPrices{
+	background-image: url('images/plank.png'); 
+	position: relative;
+	height: 100px;
+	width: 270px;
+	left: 60%;
+	top: -95%;
+	z-index: 3;	
+}
+#nextDayButton{
+	position: relative;
+	z-index: 3;
+}
+#dayDisplay {
+	position: relative;
+	z-index: 3;
+}
+/***************************
+Stats Section
+****************************/
+#register {
+	background-image: url("images/cash.png");
+	position: relative;
+	height: 175px;
+	width: 175px;
+	top: -30%;
+	z-index: 3;
+}
+#stats {
+	background-color: white;
+	position: relative;
+	opacity: 0.8;
+	font-size: 1.5em;
+	height: 100px;
+	width: 200px;	
+	top: -40%;
+}
+#register {
+	position: relative;
+	top:30%;
+}
+#purchase {
+	position: relative;
+	left:35%;
+	top: 24%; 
+}
+.fruitContainer{
+	background-color: white;
+	opacity: 0.8;
+	height: 100px;
+	width: 150px;
+	
+}
+#oranges{
+	background-image: url('images/oranges.png');
+	outline: 3px solid black;
+	height: 200px;
+	width: 33%;
+}
+#apples {
+	background-image: url('images/apple.png');
+	outline: 3px solid black;
+	height: 200px;
+	width: 33%;
+}
+
+
+#bananas{
+	background-image: url('images/banana.png');
+	outline: 3px solid black;
+	height: 200px;
+	width: 33%;
+}
+ul {
+	list-style-type: none;
+}

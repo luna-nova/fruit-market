@@ -1,0 +1,89 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Fruit Market v4.1</title>
+	<link rel="stylesheet" type="text/css" href="fruit.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+	<script src="js/jquery.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<script src="js/coregame.js"></script>
+	<script src="js/cheats.js"></script>
+</head>
+<body onload="newPrices()">
+<!--Grey Box-->
+<div class="container">
+	<div class="jumbotron">
+		<div id="fruitMarket">
+			<div class="banner">
+				<!--Updates the days button-->
+				<input onclick="nextDay()" value="Next Day" type="button" id="nextDayButton"></input>
+				<!--Counts days-->
+				<p id="dayDisplay">Day: <span id="dayCount">1</span></p>
+				<!--Fruit Market Backboard use background image CSS input for image display-->
+				<h1 id="fruitBackboard"></h1>
+				<!--Display Daily Prices-->
+				<ul class="dailyPrices">
+					<li class="text" id="applePrice">Apple Price:<span id="appleCost">$0</span></li>
+					<li class="text" id="orangePrice">Orange Price:<span id="orangeCost">$0</span></li>
+					<li class="text" id="bananaPrice">Banana Price:<span id="bananaCost">$0</span></li>
+				</ul>
+			</div>
+
+			<div class="fruitStats">
+				<ul id="stats">
+					<li>My Cash:<span id="myCash">$25.00</span></li>
+					<li >Holding Cost:</li>
+					<li>Profit: Loss:</li>
+				</ul>
+				<!-- Insert images using id-->
+				<p id="register"></p>
+				<div id="purchase">
+					<table>
+					<tr class="buyButtons">
+						<td><button type="button" onclick="buyFruit(1)" class="btn btn-info">Buy one</button></td>
+						<td><button type="button" onclick="buyFruit(10)" class="btn btn-info">Buy ten</button></td>
+						<td><button type="button" onclick="buyFruit(0)" class="btn btn-info">Buy max</button></td>
+					</tr>
+					<tr class="sellButtons">
+						<td><button type="button" onclick="sellFruit(1)"class="btn btn-success">Sell one</button></td>
+						<td><button type="button" onclick="sellFruit(10)"class="btn btn-success">Sell ten</button></td>
+						<td><button type="button" onclick="sellFruit(0)"class="btn btn-success">Sell max</button></td>
+					</tr>
+					</table>
+				</div>
+			</div>
+
+			<div class="fruitDisplay">
+				<!-- Insert images using id background image-->
+				<div id="oranges">
+					<div class="fruitContainer">
+					<input id="orangeSelect" name="selection" type="radio">Oranges</input>
+					<p>Oranges Qty:<span id="orangeCount">0</span></p>
+					<p>Value:<span id="orangeSellValue">0</span></p>
+					</div>
+				</div>
+				<div id="apples">
+					<div class="fruitContainer">
+					<input id="appleSelect" name="selection" type="radio">Apples</input>
+					<p>Apples Qty:<span id="appleCount">0</span></p>
+					<p>Value:<span id="appleSellValue">0</span></p>
+					</div>
+				</div>
+				<div id="bananas">
+					<div class="fruitContainer">
+					<input id="bananaSelect" name="selection" type="radio">Bananas</input>
+					<p>Bananas Qty:<span id="bananaCount">0</span></p>
+					<p>Value:<span id="bananaSellValue">0</span></p>
+					</div>
+				</div>
+			</div>
+			<div id="lowerLogo">
+				
+			</div>
+		</div>
+	</div>
+</div>
+</body>
+</html>
