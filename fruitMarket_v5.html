@@ -28,20 +28,20 @@
 				<!--Updates the days button-->
 				<input ng-click="nextDay()" value="Next Day" type="button" id="nextDayButton"></input>
 				<!--Counts days-->
-				<p id="dayDisplay">Day: <span>{{ dayCount }}</span></p>
+				<p id="dayDisplay">Day: {{ dayCount }}</p>
 				<!--Fruit Market Backboard use background image CSS input for image display-->
 				<h1 id="fruitBackboard"></h1>
 				<!--Display Daily Prices-->
 				<ul class="dailyPrices">
-					<li class="text" id="applePrice">Apple Price:<span id="appleCost">{{ applePrice }}</span></li>
-					<li class="text" id="orangePrice">Orange Price:<span id="orangeCost">{{ orangePrice }}</span></li>
-					<li class="text" id="bananaPrice">Banana Price:<span id="bananaCost">{{ bananaPrice }}</span></li>
+					<li class="text" id="applePrice">Apple Price: {{ applePrice }}</li>
+					<li class="text" id="orangePrice">Orange Price: {{ orangePrice }}</li>
+					<li class="text" id="bananaPrice">Banana Price: {{ bananaPrice }}</li>
 				</ul>
 			</div>
 
 			<div class="fruitStats">
 				<ul id="stats">
-					<li>My Cash:<span id="myCash">{{ " $" + myCash }}</span></li>
+					<li>My Cash: ${{ myCash }}</li>
 					<li>Holding Cost:</li>
 					<li>Profit: Loss:</li>
 				</ul>
@@ -67,23 +67,23 @@
 				<!-- Insert images using id background image-->
 				<div id="oranges">
 					<div class="fruitContainer">
-					<input id="orangeSelect" name="selection" type="radio">Oranges</input>
-					<p>Oranges Qty:<span id="orangeCount">0</span></p>
-					<p>Value:<span id="orangeSellValue">0</span></p>
+					<input name="selection" type="radio" ng-model="selectedFruit" value="orange">Oranges</input>
+					<p>Oranges Qty: {{ orangeCount }}</p>
+					<p>Value: ${{ orangeCount * orangePrice }}</p>
 					</div>
 				</div>
 				<div id="apples">
 					<div class="fruitContainer">
-					<input id="appleSelect" name="selection" type="radio">Apples</input>
-					<p>Apples Qty:<span id="appleCount">0</span></p>
-					<p>Value:<span id="appleSellValue">0</span></p>
+					<input name="selection" type="radio" ng-model="selectedFruit" value="apple">Apples</input>
+					<p>Apples Qty: {{ appleCount }}</p>
+					<p>Value: ${{ appleCount * applePrice }}</p>
 					</div>
 				</div>
 				<div id="bananas">
 					<div class="fruitContainer">
-					<input id="bananaSelect" name="selection" type="radio">Bananas</input>
-					<p>Bananas Qty:<span id="bananaCount">0</span></p>
-					<p>Value:<span id="bananaSellValue">0</span></p>
+					<input name="selection" type="radio" ng-model="selectedFruit" value="banana">Bananas</input>
+					<p>Bananas Qty: {{ bananaCount }}</p>
+					<p>Value: ${{ bananaCount * bananaPrice }}</p>
 					</div>
 				</div>
 			</div>
