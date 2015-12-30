@@ -4,6 +4,6 @@ Refactoring and Extra functionality by Lunanova
 
 TODO:
 [ ] - Add random overhead cost daily
-[ ] - Add spoiling functionality
+[x] - Add spoiling functionality
 [ ] - Custom/Better graphics
 [ ] - Utilize bootstrap for styling
