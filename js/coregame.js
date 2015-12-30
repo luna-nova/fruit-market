@@ -17,8 +17,8 @@ var orangeMin = 50,
 
 $scope.orangePrice = randomVal(orangeMin, orangeMax);
 
-var bananaMin = 200,
-		bananaMax = 30;
+var bananaMin = 30,
+		bananaMax = 200;
 
 $scope.bananaPrice = randomVal(bananaMin, bananaMax);
 
@@ -29,13 +29,8 @@ function randomVal(min, max) {
 
 //Assign New Fruit Prices and Store Values
 $scope.newPrices = function() {
-	//Assign Apple Price
 	$scope.applePrice = randomVal(appleMin, appleMax);
-
-	//Assign Orange Price
 	$scope.orangePrice = randomVal(orangeMin, orangeMax)
-
-	//Assign Banana Price
 	$scope.bananaPrice = randomVal(bananaMin, bananaMax);
 }
 
@@ -51,96 +46,174 @@ $scope.orangeCount = 0;
 $scope.bananaCount = 0;
 
 $scope.myCash = 25;
-
 $scope.selectedFruit;
 
-// Mathmatical equation to purchase fruit, deducting the correct amount of money from "myCash", adding to total fruit
-$scope.buyFruit = function(amount) {
-
-	if ($scope.selectedFruit === "apple") {
-		console.log(amount);
-		if (amount != 0 && (amount * $scope.applePrice) <= $scope.myCash) {
-			$scope.myCash -= amount * $scope.applePrice;
-			$scope.appleCount += amount;
-		}
-		else if (amount == 0) {
-			$scope.appleCount += Math.floor($scope.myCash / $scope.applePrice);
-			$scope.myCash -= (Math.floor($scope.myCash / $scope.applePrice)) * $scope.applePrice;
-		}
-	}
-
-	if ($scope.selectedFruit === "orange") {
-		if (amount != 0 && (amount * $scope.orangePrice) <= $scope.myCash) {
-			$scope.myCash -= amount * $scope.orangePrice;
-			$scope.orangeCount += amount;
-		}
-		else if (amount == 0) {
-			$scope.orangeCount += Math.floor($scope.myCash / $scope.orangePrice);
-			$scope.myCash -= (Math.floor($scope.myCash / $scope.orangePrice)) * $scope.orangePrice;
-		}
-	}
-
-	if ($scope.selectedFruit === "banana") {
-		if (amount != 0 && (amount * $scope.bananaPrice) <= $scope.myCash) {
-			$scope.myCash -= amount * $scope.bananaPrice;
-			$scope.bananaCount += amount;
-		}
-		else if (amount == 0) {
-			$scope.bananaCount += Math.floor($scope.myCash / $scope.bananaPrice);
-			$scope.myCash -= (Math.floor($scope.myCash / $scope.bananaPrice)) * $scope.bananaPrice;
-		}
+// function that creates new batches of fruit
+function BatchFruit(numFruit, spoilageRate) {
+	return {
+		amount: numFruit,
+		spoilTimer: spoilageRate
 	}
 }
 
+// function that resets the $scope.fruitCount
+function numFruitCheck(whichFruit, whichArray) {
+	$scope[whichFruit + "Count"] = 0;
+	for (var i = 0; i < whichArray.length; i++) {
+		$scope[whichFruit + "Count"] += whichArray[i].amount;
+	}
+}
 
+// function that handles buying of fruit batches
+$scope.buyFruit = function(amount) {
+	var maxAmount;
+
+	//----APPLE HANDLER----//
+	if ($scope.selectedFruit === "apple") {
+		maxAmount = Math.floor($scope.myCash / $scope.applePrice);
+
+		// return out of function if there isn't enough money
+		if ((amount * $scope.applePrice > $scope.myCash) || $scope.applePrice > $scope.myCash) {
+			return console.log("Insufficient funds.")
+		}
+
+		console.log((amount || maxAmount) + " apple(s) have been purchased.");
+
+		if (amount) {
+			$scope.myCash -= amount * $scope.applePrice;
+			appleArray.push(BatchFruit(amount, 10));
+		} else {
+			$scope.myCash -= maxAmount * $scope.applePrice;
+			appleArray.push(BatchFruit(maxAmount, 10));
+		}
+		numFruitCheck("apple", appleArray);
+	}
+
+	//----ORANGE HANDLER----//
+	if ($scope.selectedFruit === "orange") {
+		maxAmount = Math.floor($scope.myCash / $scope.orangePrice);
+
+		// return out of function if there isn't enough money
+		if ((amount * $scope.orangePrice > $scope.myCash) || $scope.orangePrice > $scope.myCash) {
+			return console.log("Insufficient funds.")
+		}
+
+		console.log((amount || maxAmount) + " orange(s) have been purchased.");
+
+		if (amount) {
+			$scope.myCash -= amount * $scope.orangePrice;
+			orangeArray.push(BatchFruit(amount, 5));
+		} else {
+			$scope.myCash -= maxAmount * $scope.orangePrice;
+			orangeArray.push(BatchFruit(maxAmount, 5));
+		}
+		numFruitCheck("orange", orangeArray);
+	}
+
+	//----BANANA HANDLER----//
+	if ($scope.selectedFruit === "banana") {
+		maxAmount = Math.floor($scope.myCash / $scope.bananaPrice);
+
+		// return out of function if there isn't enough money
+		if ((amount * $scope.bananaPrice > $scope.myCash) || $scope.bananaPrice > $scope.myCash) {
+			return console.log("Insufficient funds.")
+		}
+
+		console.log((amount || maxAmount) + " banana(s) have been purchased.");
+
+		if (amount) {
+			$scope.myCash -= amount * $scope.bananaPrice;
+			bananaArray.push(BatchFruit(amount, 3));
+		} else {
+			$scope.myCash -= maxAmount * $scope.bananaPrice;
+			bananaArray.push(BatchFruit(maxAmount, 3));
+		}
+		numFruitCheck("banana", bananaArray);
+	}
+}
 
 // Mathmatical equation to sell fruit, adding the correct amount of money to "myCash", deducting from total fruit
 
 $scope.sellFruit = function(amount) {
+	var sellFruitAmount = amount || $scope[$scope.selectedFruit + "Count"];
+	var currentFruitAmount;
 
+	//----APPLE HANDLER----//
 	if ($scope.selectedFruit === "apple") {
-		if (amount == 1 && $scope.appleCount > 0) {
-			$scope.myCash += amount * $scope.applePrice;
-			$scope.appleCount -= amount;
+
+		// check to make sure the user has apples to sell
+		if ($scope.appleCount === 0) {
+			return console.log("No apples to sell.");
 		}
-		else if (amount == 10 && $scope.appleCount >= 10) {
-			$scope.myCash += amount * $scope.applePrice;
-			$scope.appleCount -= amount;
+
+		// loop through and sell the fruit through the batches on hand
+		while (sellFruitAmount > 0) {
+
+			// placeholder for the batch of fruit's total amount
+			currentFruitAmount = appleArray[0].amount;
+			appleArray[0].amount -= sellFruitAmount;
+			sellFruitAmount -= currentFruitAmount;
+
+			// if there is no more fruit left in the current batch, throw it out.
+			if (appleArray[0].amount <= 0) {
+				appleArray.shift();
+			}
 		}
-		else if(amount == 0 && $scope.appleCount > 0) {
-			$scope.myCash += $scope.appleCount * $scope.applePrice;
-			$scope.appleCount = 0;
-		}
+		console.log((amount || "All of the") + " apple(s) have been deducted.");
+		$scope.myCash += (amount || $scope.appleCount) * $scope.applePrice;
+		numFruitCheck("apple", appleArray);
 	}
 
+	//----ORANGE HANDLER----//
 	if ($scope.selectedFruit === "orange") {
-		if(amount == 1 && $scope.orangeCount > 0) {
-			$scope.myCash += amount * $scope.orangePrice;
-			$scope.orangeCount -= amount;
+
+		// check to make sure the user has oranges to sell
+		if ($scope.orangeCount === 0) {
+			return console.log("No oranges to sell.");
 		}
-		else if (amount == 10 && $scope.orangeCount >= 10) {
-			$scope.myCash += amount * $scope.orangePrice;
-			$scope.orangeCount -= amount;
+
+		// loop through and sell the fruit through the batches on hand
+		while (sellFruitAmount > 0) {
+
+			// placeholder for the batch of fruit's total amount
+			currentFruitAmount = orangeArray[0].amount;
+			orangeArray[0].amount -= sellFruitAmount;
+			sellFruitAmount -= currentFruitAmount;
+
+			// if there is no more fruit left in the current batch, throw it out.
+			if (orangeArray[0].amount <= 0) {
+				orangeArray.shift();
+			}
 		}
-		else if (amount == 0 && $scope.orangeCount > 0) {
-			$scope.myCash += $scope.orangeCount * $scope.orangePrice;
-			$scope.orangeCount = 0;
-		}
+		console.log((amount || "All of the") + " orange(s) have been deducted.");
+		$scope.myCash += (amount || $scope.orangeCount) * $scope.orangePrice;
+		numFruitCheck("orange", orangeArray);
 	}
 
+	//----BANANA HANDLER----//
 	if ($scope.selectedFruit === "banana") {
-		if (amount == 1 && $scope.bananaCount > 0) {
-			$scope.myCash += amount * $scope.bananaPrice;
-			$scope.bananaCount -= amount;
+
+		// check to make sure the user has bananas to sell
+		if ($scope.bananaCount === 0) {
+			return console.log("No bananas to sell.");
 		}
-		else if (amount == 10 && $scope.bananaCount >= 10) {
-			$scope.myCash += amount * $scope.bananaPrice;
-			$scope.bananaCount -= amount;
+
+		// loop through and sell the fruit through the batches on hand
+		while (sellFruitAmount > 0) {
+
+			// placeholder for the batch of fruit's total amount
+			currentFruitAmount = bananaArray[0].amount;
+			bananaArray[0].amount -= sellFruitAmount;
+			sellFruitAmount -= currentFruitAmount;
+
+			// if there is no more fruit left in the current batch, throw it out.
+			if (bananaArray[0].amount <= 0) {
+				bananaArray.shift();
+			}
 		}
-		else if (amount == 0 && $scope.bananaCount > 0) {
-			$scope.myCash += $scope.bananaCount * $scope.bananaPrice;
-			$scope.bananaCount = 0;
-		}
+		console.log((amount || "All of the") + " banana(s) have been deducted.");
+		$scope.myCash += (amount || $scope.bananaCount) * $scope.bananaPrice;
+		numFruitCheck("banana", bananaArray);
 	}
 }
 
@@ -155,59 +228,43 @@ $scope.dayCount = 1,
 		orangeArray = [],
 		bananaArray = [];
 
-//Change the daily value of fruit, also add to the "dayCount"
 $scope.nextDay = function() {
   $scope.dayCount++;
 	$scope.newPrices();
 
-	//apples
-  if ($scope.appleCount != 0) {
-  	appleArray.push($scope.appleCount);
-  	if (appleArray.length === 6) {
-  		appleArray.sort(function(a, b){return a-b});
-  		badApple = (appleArray[appleArray.length - 1] - appleArray.shift());
-			$scope.appleCount = 0;
-  	}
-  	console.log("Apple array: " + appleArray);
+	//----APPLE HANDLER----//
+	for (var i = 0; i < appleArray.length; i++) {
+		appleArray[i].spoilTimer--;
+		if (appleArray[i].spoilTimer === 0) {
+			console.log("A batch of " + appleArray[i].amount + " apple(s) have been lost.");
+			appleArray.shift();
+			numFruitCheck("apple", appleArray);
+			i--;
+		}
 	}
 
-	else if ($scope.appleCount == 0) {
-		appleArray.length = 0;
-		console.log("Apple array: " + appleArray);
+	//----ORANGE HANDLER----//
+	for (var i = 0; i < orangeArray.length; i++) {
+		orangeArray[i].spoilTimer--;
+		if (orangeArray[i].spoilTimer === 0) {
+			console.log("A batch of " + orangeArray[i].amount + " orange(s) have been lost.");
+			orangeArray.shift();
+			numFruitCheck("orange", orangeArray);
+			i--;
+		}
 	}
 
-	//oranges
-  if ($scope.orangeCount != 0) {
-  	orangeArray.push($scope.orangeCount);
-  	if (orangeArray.length === 4) {
-  		orangeArray.sort(function(a, b){return a-b});
-  		badOrange	=	 (orangeArray[orangeArray.length - 1] - orangeArray.shift());
-			$scope.orangeCount = 0;
-  	}
-  	console.log("Orange Array: " + orangeArray);
+	//----BANANA HANDLER----//
+	for (var i = 0; i < bananaArray.length; i++) {
+		bananaArray[i].spoilTimer--;
+		if (bananaArray[i].spoilTimer === 0) {
+			console.log("A batch of " + bananaArray[i].amount + " banana(s) have been lost.");
+			bananaArray.shift();
+			numFruitCheck("banana", bananaArray);
+			i--;
+		}
 	}
-
-	else if ($scope.orangeCount == 0) {
-		orangeArray.length = 0;
-		console.log("Orange Array: " + orangeArray);
-	}
-
-	//banana
-  if ($scope.bananaCount != 0) {
-  	bananaArray.push($scope.bananaCount);
-  	if (bananaArray.length === 2) {
-  		bananaArray.sort(function(a, b){return a-b});
-  		badBanana	=	(bananaArray[bananaArray.length - 1] - bananaArray.shift());
-			$scope.bananaCount = 0;
-  	}
-  	console.log("Banana array: " + bananaArray);
-	}
-
-	else if ($scope.bananaCount == 0) {
-		bananaArray.length = 0;
-		console.log("Banana Array: " + bananaArray);
-	}
-	// updateMyStatus();
+	console.log("Total Fruit (Apples, Oranges, Bananas): " + $scope.appleCount + ", " + $scope.orangeCount + ", " + $scope.bananaCount);
 }
 
 });
