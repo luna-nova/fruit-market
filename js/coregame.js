@@ -232,12 +232,16 @@ $scope.dayCount = 1,
 
 function randomOverhead() {
 	var randomEffect = Math.floor(Math.random() * 5 + 1);
-	var overheadAmount = Math.floor($scope.myCash / 10);
+	var overheadAmount;
+	if ($scope.myCash < 100) {
+		overheadAmount = Math.floor(Math.random() * 5 + 1);
+	} else if ($scope.myCash > 999) {
+		overheadAmount = Math.floor(Math.random() * 450 + 50);
+	} else {
+		overheadAmount = Math.floor(Math.random() * 40 + 10);
+	}
 
 	if (randomEffect === 1) {
-		if (overheadAmount < 1) {
-			return alert("The fruit government officials were coming to take taxes from you, but alas, you are too poor.");
-		}
 		alert("Oh no! It's taxes day. Pay the fine of $" + overheadAmount + " or else you'll go to jail.");
 		$scope.myCash -= overheadAmount;
 	}
