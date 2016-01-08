@@ -12,8 +12,8 @@ var appleMin = 10,
 
 $scope.applePrice = randomVal(appleMin, appleMax);
 
-var orangeMin = 50,
-		orangeMax = 10;
+var orangeMin = 10,
+		orangeMax = 50;
 
 $scope.orangePrice = randomVal(orangeMin, orangeMax);
 
@@ -228,9 +228,31 @@ $scope.dayCount = 1,
 		orangeArray = [],
 		bananaArray = [];
 
+// TODO: random overhead function, preventing players from skipping large amounts of days
+
+function randomOverhead() {
+	var randomEffect = Math.floor(Math.random() * 5 + 1);
+	var overheadAmount;
+	if ($scope.myCash < 100) {
+		overheadAmount = Math.floor(Math.random() * 5 + 1);
+	} else if ($scope.myCash > 999) {
+		overheadAmount = Math.floor(Math.random() * 450 + 50);
+	} else {
+		overheadAmount = Math.floor(Math.random() * 40 + 10);
+	}
+
+	if (randomEffect === 1) {
+		alert("Oh no! It's taxes day. Pay the fine of $" + overheadAmount + " or else you'll go to jail.");
+		$scope.myCash -= overheadAmount;
+	}
+}
+
+// END
+
 $scope.nextDay = function() {
   $scope.dayCount++;
 	$scope.newPrices();
+	randomOverhead();
 
 	//----APPLE HANDLER----//
 	for (var i = 0; i < appleArray.length; i++) {
